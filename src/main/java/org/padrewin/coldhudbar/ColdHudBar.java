@@ -4,6 +4,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -31,6 +32,12 @@ public class ColdHudBar extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
 
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
+            getLogger().warning("PlaceholderAPI is not loaded. This plugin won't work properly.");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
         String name = getDescription().getName();
         getLogger().info("");
         getLogger().info("  ____ ___  _     ____  ");
@@ -39,19 +46,16 @@ public class ColdHudBar extends JavaPlugin implements Listener {
         getLogger().info("| |__| |_| | |___| |_| |");
         getLogger().info(" \\____\\___/|_____|____/");
         getLogger().info("    " + name + " v" + getDescription().getVersion());
-        getLogger().info("    Author(s): " + (String)getDescription().getAuthors().get(0));
+        getLogger().info("    Author(s): " + getDescription().getAuthors().get(0));
         getLogger().info("    (c) Cold Development. All rights reserved.");
         getLogger().info("");
 
-        saveDefaultConfig(); // Salvează config.yml dacă nu există deja
+        saveDefaultConfig();
 
-        // Încarcă configurația
         loadConfig();
 
-        // Înregistrează comanda /hudactionbar reload și /hudactionbar info
         getCommand("hudactionbar").setExecutor(this);
 
-        // Înregistrează evenimentele și pornește task-ul pentru Action Bar
         getServer().getPluginManager().registerEvents(this, this);
 
         new BukkitRunnable() {
@@ -63,20 +67,23 @@ public class ColdHudBar extends JavaPlugin implements Listener {
                     player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
                 }
             }
-        }.runTaskTimer(this, 0L, 20L); // Task care rulează la fiecare secundă
+        }.runTaskTimer(this, 0L, 20L);
     }
 
     @Override
     public void onDisable() {
-        // Logică pentru dezactivarea plugin-ului
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        String message = PlaceholderAPI.setPlaceholders(player, actionBarMessage);
-        message = translateHexColorCodes(message);
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            String message = PlaceholderAPI.setPlaceholders(player, actionBarMessage);
+            message = translateHexColorCodes(message);
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
+        } else {
+            getLogger().warning("PlaceholderAPI is not loaded.");
+        }
     }
 
     @Override
@@ -107,7 +114,6 @@ public class ColdHudBar extends JavaPlugin implements Listener {
         File configFile = new File(getDataFolder(), "config.yml");
         FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
 
-        // Încarcă mesajele din config.yml
         pluginTag = config.getString("pluginTag");
         actionBarMessage = config.getString("actionBarMessage");
         noPermissionMessage = config.getString("messages.noPermission");
@@ -116,7 +122,6 @@ public class ColdHudBar extends JavaPlugin implements Listener {
         developer = config.getString("info.developer");
         github = config.getString("info.github");
 
-        // Aplică formatarea de culori pentru actionBarMessage
         actionBarMessage = translateHexColorCodes(actionBarMessage);
     }
 
@@ -126,7 +131,6 @@ public class ColdHudBar extends JavaPlugin implements Listener {
     }
 
     private String translateHexColorCodes(String message) {
-        // Înlocuiește codurile de culoare hex cu formatul ChatColor corespunzător
         Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
         Matcher matcher = hexPattern.matcher(message);
         StringBuffer buffer = new StringBuffer(message.length());
@@ -140,7 +144,6 @@ public class ColdHudBar extends JavaPlugin implements Listener {
         matcher.appendTail(buffer);
         message = buffer.toString();
 
-        // Înlocuiește codurile de culoare alternate (&)
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 }

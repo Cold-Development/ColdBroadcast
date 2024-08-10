@@ -3,7 +3,9 @@ version: 1.0
 api-version: 1.20
 author: padrewin
 main: org.padrewin.coldhudbar.ColdHudBar
-depend: [PlaceholderAPI]
+dependency: [PlaceholderAPI]
+loadafter:
+  - PlaceholderAPI
 commands:
   hudactionbar:
     description: Reloads the configuration of HUDActionBar
