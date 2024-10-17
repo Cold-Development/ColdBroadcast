@@ -1,13 +1,14 @@
-name: ColdHudBar
-version: 1.0
+name: ColdBroadcast
+version: '@version@'
+authors: [padrewin]
+website: 'https://github.com/Cold-Development/ColdBroadcast'
 api-version: 1.20
-author: padrewin
-main: org.padrewin.coldhudbar.ColdHudBar
-dependency: [PlaceholderAPI]
+main: dev.padrewin.coldbroadcast.ColdBroadcast
+softdepend: [PlaceholderAPI]
 loadafter:
   - PlaceholderAPI
 commands:
-  hudactionbar:
-    description: Reloads the configuration of HUDActionBar
-    permission: coldhud
-    aliases: [coldhud, hudbar, coldhudbar]
+  coldbroadcast:
+    description: Reloads the configuration of ColdBroadcast
+    permission: coldbroadcast.*
+    aliases: [coldbroadcast, coldbr, coldbroadcaster]

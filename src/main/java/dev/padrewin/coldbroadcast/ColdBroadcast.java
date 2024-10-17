@@ -1,5 +1,8 @@
-package org.padrewin.coldhudbar;
+package dev.padrewin.coldbroadcast;
 
+import dev.padrewin.colddev.ColdPlugin;
+import dev.padrewin.colddev.manager.Manager;
+import dev.padrewin.colddev.manager.PluginUpdateManager;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
@@ -13,14 +16,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ColdHudBar extends JavaPlugin implements Listener {
+public class ColdBroadcast extends ColdPlugin implements Listener {
+
+    private static ColdBroadcast instance;
     private String actionBarMessage;
     private String pluginTag;
     private String noPermissionMessage;
@@ -29,8 +35,16 @@ public class ColdHudBar extends JavaPlugin implements Listener {
     private String developer;
     private String github;
 
+    public ColdBroadcast() {
+        super("Cold-Development", "ColdBroadcast", 23655, null, null, null);
+        instance = this;
+    }
+
     @Override
-    public void onEnable() {
+    public void enable() {
+        instance = this;
+        getManager(PluginUpdateManager.class);
+
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
             getLogger().warning("PlaceholderAPI is not loaded. This plugin won't work properly.");
@@ -47,14 +61,14 @@ public class ColdHudBar extends JavaPlugin implements Listener {
         getLogger().info(" \\____\\___/|_____|____/");
         getLogger().info("    " + name + " v" + getDescription().getVersion());
         getLogger().info("    Author(s): " + getDescription().getAuthors().get(0));
-        getLogger().info("    (c) Cold Development. All rights reserved.");
+        getLogger().info("    (c) Cold Development ❄");
         getLogger().info("");
 
         saveDefaultConfig();
 
         loadConfig();
 
-        getCommand("hudactionbar").setExecutor(this);
+        getCommand("coldbroadcast").setExecutor(this);
 
         getServer().getPluginManager().registerEvents(this, this);
 
@@ -71,7 +85,13 @@ public class ColdHudBar extends JavaPlugin implements Listener {
     }
 
     @Override
-    public void onDisable() {
+    public void disable() {
+        getLogger().info("ColdBroadcast has been disabled.");
+    }
+
+    @Override
+    protected @NotNull List<Class<? extends Manager>> getManagerLoadPriority() {
+        return List.of();
     }
 
     @EventHandler
@@ -88,10 +108,10 @@ public class ColdHudBar extends JavaPlugin implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (command.getName().equalsIgnoreCase("hudactionbar")) {
+        if (command.getName().equalsIgnoreCase("coldbroadcast")) {
             if (args.length > 0) {
                 if (args[0].equalsIgnoreCase("reload")) {
-                    if (sender.hasPermission("hudactionbar.reload")) {
+                    if (sender.hasPermission("coldbroadcast.reload")) {
                         reloadConfig();
                         loadConfig();
                         sender.sendMessage(formatMessage(pluginTag + " " + reloadSuccessMessage));
@@ -100,9 +120,10 @@ public class ColdHudBar extends JavaPlugin implements Listener {
                     }
                     return true;
                 } else if (args[0].equalsIgnoreCase("info")) {
-                    sender.sendMessage(ChatColor.DARK_GRAY + "Version: v1.0");
+                    String version = this.getDescription().getVersion();
+                    sender.sendMessage(ChatColor.DARK_GRAY + "Version: v" + version);
                     sender.sendMessage(ChatColor.DARK_GRAY + "Developer: padrewin");
-                    sender.sendMessage(ChatColor.DARK_GRAY + "GitHub: https://github.com/padrewin");
+                    sender.sendMessage(ChatColor.DARK_GRAY + "GitHub: https://github.com/Cold-Development");
                     return true;
                 }
             }

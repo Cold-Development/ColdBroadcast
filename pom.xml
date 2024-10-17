@@ -4,24 +4,84 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.padrewin</groupId>
-    <artifactId>ColdHudBar</artifactId>
-    <version>1.2</version>
+    <artifactId>ColdBroadcast</artifactId>
+    <version>1.3</version>
     <packaging>jar</packaging>
 
+    <name>ColdBroadcast</name>
+
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+    </properties>
+
+    <build>
+        <plugins>
+            <!-- Maven Shade Plugin for Relocation -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <minimizeJar>true</minimizeJar>
+                            <relocations>
+                                <!-- Relocating dev.padrewin.coldplugin to avoid conflicts -->
+                                <relocation>
+                                    <pattern>dev.padrewin.colddev</pattern>
+                                    <shadedPattern>dev.padrewin.coldbits.libs.coldplugin</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>17</source>
+                    <target>17</target>
+                </configuration>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
     <repositories>
-        <!-- SpigotMC Snapshot Repository -->
+        <repository>
+            <id>com.github.coldplugin</id>
+            <url>https://maven.pkg.github.com/Cold-Development/ColdDev</url>
+        </repository>
+
+        <repository>
+            <id>papermc-repo</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
 
-        <!-- Maven Central Repository -->
         <repository>
             <id>central</id>
             <url>https://repo.maven.apache.org/maven2/</url>
         </repository>
 
-        <!-- PlaceholderAPI Repository -->
         <repository>
             <id>placeholderapi-repo</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
@@ -29,31 +89,20 @@
     </repositories>
 
     <dependencies>
-        <!-- Bukkit/Paper API dependency -->
+        <dependency>
+            <groupId>dev.padrewin</groupId>
+            <artifactId>colddev</artifactId>
+            <version>1.4.1</version>
+            <scope>compile</scope>
+        </dependency>
+
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.20.4-R0.1-SNAPSHOT</version>
+            <version>1.20.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
-            <version>1.19-R0.1-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- BungeeCord Chat dependency -->
-        <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-chat</artifactId>
-            <version>1.20-R0.1</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- PlaceholderAPI dependency -->
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
@@ -62,44 +111,4 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <!-- Maven Shade Plugin for packaging -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
-                <configuration>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <artifactSet>
-                                <excludes>
-                                    <exclude>org.bukkit:*</exclude>
-                                    <exclude>org.spigotmc:*</exclude>
-                                    <exclude>org.yaml:*</exclude>
-                                    <exclude>com.google.code.gson:*</exclude>
-                                    <exclude>org.apache.commons:*</exclude>
-                                    <exclude>commons-lang:*</exclude>
-                                    <exclude>commons-io:*</exclude>
-                                    <exclude>com.google.guava:*</exclude>
-                                </excludes>
-                            </artifactSet>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.padrewin.coldhudbar.ColdHudBar</mainClass>
-                                </transformer>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>
