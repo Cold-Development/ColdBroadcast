@@ -1,0 +1,23 @@
+# Plugin prefix
+prefix: "&8「&#635AA7C&#796EB5o&#8F83C2l&#A597D0d&#BAABDDB&#D0C0EBr&#E6D4F8o&#DABDF8a&#CEA5F7d&#C28EF7a&#B677F7c&#AA5FF6s&#9E48F6t&8」&7» "
+
+# Help Command
+command-help-description: '&8 - &c/coldbroadcast ajuda &7- Exibe o menu de ajuda... Você chegou'
+command-help-title: '&cComandos disponíveis:'
+
+# Misc
+no-permission: '&cVocê não tem permissão para isso!'
+unknown-command: '&cComando desconhecido &4%input%&c.'
+invalid-command-usage: '&cUso de comando inválido.'
+
+# Base Command Message
+base-command-color: '&7'
+base-command-help: '&7Use &c/coldbroadcast ajuda &7para informações de comando.'
+
+# Reload Command
+command-reload-description: '&8 - &c/coldbroadcast reload &7- Recarrega o plugin'
+command-reload-usage: '&7Uso: &c/coldbroadcast reload'
+command-reload-success: '&7Os arquivos de configuração e idioma foram recarregados.'
+
+# Version Command
+command-version-description: '&8 - &c/coldbroadcast version &7- Exibe as informações de versão do ColdTracker'
