@@ -5,12 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.padrewin</groupId>
     <artifactId>ColdBroadcast</artifactId>
-    <version>1.3</version>
+    <version>1.4</version>
     <packaging>jar</packaging>
 
     <name>ColdBroadcast</name>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -35,7 +37,7 @@
                                 <!-- Relocating dev.padrewin.coldplugin to avoid conflicts -->
                                 <relocation>
                                     <pattern>dev.padrewin.colddev</pattern>
-                                    <shadedPattern>dev.padrewin.coldbits.libs.coldplugin</shadedPattern>
+                                    <shadedPattern>dev.padrewin.coldbroadcast.libs.coldplugin</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -63,8 +65,8 @@
 
     <repositories>
         <repository>
-            <id>com.github.coldplugin</id>
-            <url>https://maven.pkg.github.com/Cold-Development/ColdDev</url>
+            <id>colddev-repo</id>
+            <url>https://repo.colddev.dev/</url>
         </repository>
 
         <repository>
@@ -92,7 +94,7 @@
         <dependency>
             <groupId>dev.padrewin</groupId>
             <artifactId>colddev</artifactId>
-            <version>1.4.1</version>
+            <version>1.4.6</version>
             <scope>compile</scope>
         </dependency>
 
