@@ -1,6 +1,6 @@
 ![GitHub Release](https://img.shields.io/github/v/release/Cold-Development/ColdBroadcast?style=for-the-badge&logo=github&color=r0b07)
 
-## 👾 What is ColdCroadcast?
+## 👾 What is ColdBroadcast?
 **ColdBroadcast** is a Minecraft plugin that allows you to broadcast a custom message above player's action bar..<br>
 * This is a plugin based on `ColdDev` library.
 * Multiple locales supported:
