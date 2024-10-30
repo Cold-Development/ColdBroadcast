@@ -1,14 +1,40 @@
 name: ColdBroadcast
 version: '@version@'
-authors: [padrewin]
-website: 'https://github.com/Cold-Development/ColdBroadcast'
-api-version: 1.20
 main: dev.padrewin.coldbroadcast.ColdBroadcast
-softdepend: [PlaceholderAPI]
-loadafter:
+api-version: '1.20'
+authors: [ padrewin ]
+website: 'https://github.com/Cold-Development/ColdBroadcast'
+softdepend:
   - PlaceholderAPI
+
 commands:
   coldbroadcast:
-    description: Reloads the configuration of ColdBroadcast
-    permission: coldbroadcast.*
-    aliases: [coldbroadcast, coldbr, coldbroadcaster]
+    description: Main command for ColdBroadcast plugin
+    aliases: [cb, coldbroadcaster, coldbroadcast]
+    permission: "coldbroadcast.version"
+  reload:
+    description: Reloads the ColdBroadcast configuration
+    permission: "coldbroadcast.reload"
+  help:
+    description: Displays help for ColdBroadcast commands
+    permission: "coldbroadcast.help"
+
+permissions:
+  coldbroadcast.*:
+    description: Root permission for ColdBroadcast plugin
+    children:
+      coldbroadcast.reload: true
+      coldbroadcast.help: true
+      coldbroadcast.version: true
+
+  coldbroadcast.version:
+    description: Grants access to view the plugin version
+    default: true
+
+  coldbroadcast.reload:
+    description: Grants access to reload command
+    default: op
+
+  coldbroadcast.help:
+    description: Grants access to help command
+    default: true
